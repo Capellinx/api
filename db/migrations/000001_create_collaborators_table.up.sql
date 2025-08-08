@@ -1,0 +1,13 @@
+CREATE TABLE collaborators (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    social_reason VARCHAR(100) NOT NULL,
+    email VARCHAR(100) NOT NULL UNIQUE,
+    cnpj VARCHAR(14) NOT NULL,
+
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    deleted_at TIMESTAMP NULL,
+
+    role VARCHAR(50) NOT NULL
+);
