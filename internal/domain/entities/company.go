@@ -19,7 +19,7 @@ type Company struct {
 	PostalCode  string     `json:"postal_code,omitempty"`
 	City        string     `json:"city,omitempty"`
 	State       string     `json:"state,omitempty"`
-	Active      bool       `json:"active,omitempty" gorm:"default:true"`
+	Active      bool       `json:"active" gorm:"default:true"`
 	CreatedAt   time.Time  `json:"created_at"`
 	UpdatedAt   time.Time  `json:"updated_at"`
 	DeletedAt   *time.Time `json:"deleted_at,omitempty"`
