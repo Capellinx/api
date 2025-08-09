@@ -19,6 +19,9 @@ func RegisterCompanyRoutes(r *gin.Engine, handler *http.CompanyHandler) {
 			"",
 			handler.FetchAll,
 		)
+		companies.PATCH(
+			"/:id",
+			handler.Desactive,
+		)
 	}
-
 }

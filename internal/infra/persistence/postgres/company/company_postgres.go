@@ -48,3 +48,29 @@ func (rp *CompanyRepositoryPostgres) FindAll(ctx context.Context) ([]*entities.C
 	}
 	return companies, nil
 }
+
+func (rp *CompanyRepositoryPostgres) FindByID(ctx context.Context, id string) (*entities.Company, error) {
+	if id == "" {
+		return nil, errors.New("company ID cannot be empty")
+	}
+
+	dbCompany := CompanyDB{}
+	if err := rp.db.WithContext(ctx).Where("id = ?", id).First(&dbCompany).Error; err != nil {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			return nil, nil
+		}
+		return nil, err
+	}
+	return dbCompany.ToEntity(), nil
+}
+
+func (rp *CompanyRepositoryPostgres) Desactive(ctx context.Context, co *entities.Company) error {
+	if err := rp.db.WithContext(ctx).Model(&CompanyDB{}).Where("id = ?", co.ID).
+		Updates(map[string]interface{}{
+			"active":     co.Active,
+			"deleted_at": co.DeletedAt,
+		}).Error; err != nil {
+		return err
+	}
+	return nil
+}

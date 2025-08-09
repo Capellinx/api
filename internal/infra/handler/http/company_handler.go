@@ -9,12 +9,17 @@ import (
 type CompanyHandler struct {
 	createUseCase *company.CreateCompanyUseCase
 	findAll       *company.FetchAllCompanyUseCase
+	desactive     *company.DesactiveCompanyUseCase
 }
 
-func NewCompanyHandler(createUC *company.CreateCompanyUseCase, fa *company.FetchAllCompanyUseCase) *CompanyHandler {
+func NewCompanyHandler(
+	createUC *company.CreateCompanyUseCase,
+	fa *company.FetchAllCompanyUseCase,
+	dst *company.DesactiveCompanyUseCase) *CompanyHandler {
 	return &CompanyHandler{
 		createUseCase: createUC,
 		findAll:       fa,
+		desactive:     dst,
 	}
 }
 
@@ -48,4 +53,20 @@ func (h *CompanyHandler) FetchAll(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, cp)
+}
+
+func (h *CompanyHandler) Desactive(c *gin.Context) {
+	id := c.Param("id")
+	if id == "" {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "ID da empresa é obrigatório"})
+		return
+	}
+
+	err := h.desactive.Execute(c.Request.Context(), company.DesactiveCompanyInputDTO{ID: id})
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	c.Status(http.StatusNoContent)
 }
