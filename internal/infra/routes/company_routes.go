@@ -15,13 +15,17 @@ func RegisterCompanyRoutes(r *gin.Engine, handler *http.CompanyHandler) {
 			middlewares.ValidationRequestMiddleware[company.CreateCompanyInputDTO](),
 			handler.Create,
 		)
-		companies.GET(
-			"",
-			handler.FetchAll,
+		companies.POST(
+			"/:id",
+			handler.Find,
 		)
 		companies.PATCH(
 			"/:id",
 			handler.Desactive,
+		)
+		companies.GET(
+			"",
+			handler.FetchAll,
 		)
 	}
 }

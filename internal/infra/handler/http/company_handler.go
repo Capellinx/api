@@ -10,16 +10,19 @@ type CompanyHandler struct {
 	createUseCase *company.CreateCompanyUseCase
 	findAll       *company.FetchAllCompanyUseCase
 	desactive     *company.DesactiveCompanyUseCase
+	findOne       *company.FindOneCompanyUseCase
 }
 
 func NewCompanyHandler(
 	createUC *company.CreateCompanyUseCase,
 	fa *company.FetchAllCompanyUseCase,
-	dst *company.DesactiveCompanyUseCase) *CompanyHandler {
+	dst *company.DesactiveCompanyUseCase,
+	fo *company.FindOneCompanyUseCase) *CompanyHandler {
 	return &CompanyHandler{
 		createUseCase: createUC,
 		findAll:       fa,
 		desactive:     dst,
+		findOne:       fo,
 	}
 }
 
@@ -69,4 +72,21 @@ func (h *CompanyHandler) Desactive(c *gin.Context) {
 	}
 
 	c.Status(http.StatusNoContent)
+}
+
+func (h *CompanyHandler) Find(c *gin.Context) {
+	id := c.Param("id")
+	if id == "" {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "ID da empresa é obrigatório"})
+		return
+	}
+
+	co, err := h.findOne.Execute(c.Request.Context(), id)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	c.Status(http.StatusOK)
+	c.JSON(http.StatusOK, co)
 }

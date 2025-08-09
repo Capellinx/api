@@ -20,8 +20,9 @@ func Run() {
 	companyCreate := company.NewCreateCompanyUseCase(companyRepository)
 	companyFetchAll := company.NewFetchAllCompanyUseCase(companyRepository)
 	companyDesactive := company.NewDesactiveCompanyUseCase(companyRepository)
+	companyFindOne := company.NewFindOneCompanyUseCase(companyRepository)
 
-	companyHandler := http.NewCompanyHandler(companyCreate, companyFetchAll, companyDesactive)
+	companyHandler := http.NewCompanyHandler(companyCreate, companyFetchAll, companyDesactive, companyFindOne)
 
 	app := gin.Default()
 	routes.RegisterCompanyRoutes(app, companyHandler)
