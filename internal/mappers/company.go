@@ -1,7 +1,7 @@
-package mapper
+package mappers
 
 import (
-	"api/internal/domain/entity"
+	"api/internal/domain/entities"
 	"github.com/lib/pq"
 	"time"
 )
@@ -22,8 +22,8 @@ func (CompanyDB) TableName() string {
 	return "company"
 }
 
-func (db *CompanyDB) ToEntity() *entity.Company {
-	return &entity.Company{
+func (db *CompanyDB) ToEntity() *entities.Company {
+	return &entities.Company{
 		ID:           db.ID,
 		Name:         db.Name,
 		SocialReason: db.SocialReason,
@@ -36,7 +36,7 @@ func (db *CompanyDB) ToEntity() *entity.Company {
 	}
 }
 
-func FromEntity(company *entity.Company) *CompanyDB {
+func FromEntity(company *entities.Company) *CompanyDB {
 	return &CompanyDB{
 		ID:           company.ID,
 		Name:         company.Name,

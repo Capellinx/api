@@ -1,10 +1,10 @@
 package app
 
 import (
-	"api/internal/adapter/handler/http"
-	"api/internal/adapter/repository"
-	"api/internal/adapter/routes"
-	"api/internal/usecases/company"
+	"api/internal/domain/usecases/company"
+	"api/internal/infra/handler/http"
+	"api/internal/infra/repositories"
+	"api/internal/infra/routes"
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
 	"gorm.io/driver/postgres"
@@ -16,7 +16,7 @@ import (
 func Run() {
 	db := InitDatabase()
 
-	companyRepository := repository.NewCompanyRepositoryPostgres(db)
+	companyRepository := repositories.NewCompanyRepositoryPostgres(db)
 	companyUseCase := company.NewCreateCompanyUseCase(companyRepository)
 	companyHandler := http.NewCompanyHandler(companyUseCase)
 

@@ -1,8 +1,8 @@
-package repository
+package repositories
 
 import (
-	"api/internal/domain/entity"
-	"api/internal/mapper"
+	"api/internal/domain/entities"
+	"api/internal/mappers"
 	"context"
 	"errors"
 	"gorm.io/gorm"
@@ -16,8 +16,8 @@ func NewCompanyRepositoryPostgres(db *gorm.DB) *CompanyRepositoryPostgres {
 	return &CompanyRepositoryPostgres{db: db}
 }
 
-func (rp *CompanyRepositoryPostgres) FindByCnpj(ctx context.Context, cnpj string) (*entity.Company, error) {
-	var companyDB mapper.CompanyDB
+func (rp *CompanyRepositoryPostgres) FindByCnpj(ctx context.Context, cnpj string) (*entities.Company, error) {
+	var companyDB mappers.CompanyDB
 	if err := rp.db.WithContext(ctx).Where("cnpj = ?", cnpj).First(&companyDB).Error; err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
 			return nil, nil
@@ -27,8 +27,8 @@ func (rp *CompanyRepositoryPostgres) FindByCnpj(ctx context.Context, cnpj string
 	return companyDB.ToEntity(), nil
 }
 
-func (rp *CompanyRepositoryPostgres) Create(ctx context.Context, company *entity.Company) error {
-	dbCompany := mapper.FromEntity(company)
+func (rp *CompanyRepositoryPostgres) Create(ctx context.Context, company *entities.Company) error {
+	dbCompany := mappers.FromEntity(company)
 	if err := rp.db.WithContext(ctx).Create(dbCompany).Error; err != nil {
 		return err
 	}

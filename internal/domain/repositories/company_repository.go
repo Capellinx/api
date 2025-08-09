@@ -1,0 +1,11 @@
+package repositories
+
+import (
+	"api/internal/domain/entities"
+	"context"
+)
+
+type CompanyRepository interface {
+	FindByCnpj(ctx context.Context, cnpj string) (*entities.Company, error)
+	Create(ctx context.Context, company *entities.Company) error
+}

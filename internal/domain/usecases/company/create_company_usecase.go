@@ -1,8 +1,8 @@
 package company
 
 import (
-	"api/internal/domain/entity"
-	"api/internal/domain/repository"
+	"api/internal/domain/entities"
+	"api/internal/domain/repositories"
 	"context"
 	"fmt"
 	"github.com/google/uuid"
@@ -17,10 +17,10 @@ type CreateCompanyInputDTO struct {
 }
 
 type CreateCompanyUseCase struct {
-	repo repository.CompanyRepository
+	repo repositories.CompanyRepository
 }
 
-func NewCreateCompanyUseCase(r repository.CompanyRepository) *CreateCompanyUseCase {
+func NewCreateCompanyUseCase(r repositories.CompanyRepository) *CreateCompanyUseCase {
 	return &CreateCompanyUseCase{repo: r}
 }
 
@@ -34,7 +34,7 @@ func (uc *CreateCompanyUseCase) Execute(ctx context.Context, c CreateCompanyInpu
 		return fmt.Errorf("company already exists")
 	}
 
-	company := &entity.Company{
+	company := &entities.Company{
 		ID:           uuid.New().String(),
 		Name:         c.Name,
 		SocialReason: c.SocialReason,

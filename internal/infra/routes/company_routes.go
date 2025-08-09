@@ -1,10 +1,9 @@
 package routes
 
 import (
-	"api/internal/adapter/handler/http"
-	"api/internal/adapter/handler/middleware"
-	"api/internal/usecases/company"
-
+	"api/internal/domain/usecases/company"
+	"api/internal/infra/handler/http"
+	"api/internal/infra/handler/middlewares"
 	"github.com/gin-gonic/gin"
 )
 
@@ -13,7 +12,7 @@ func RegisterCompanyRoutes(r *gin.Engine, handler *http.CompanyHandler) {
 	{
 		companies.POST(
 			"",
-			middleware.ValidationRequestMiddleware[company.CreateCompanyInputDTO](),
+			middlewares.ValidationRequestMiddleware[company.CreateCompanyInputDTO](),
 			handler.Create)
 	}
 }

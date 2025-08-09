@@ -1,7 +1,7 @@
 package http
 
 import (
-	"api/internal/usecases/company"
+	"api/internal/domain/usecases/company"
 	"github.com/gin-gonic/gin"
 	"net/http"
 )
