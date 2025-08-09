@@ -2,7 +2,6 @@ package http
 
 import (
 	"api/internal/usecases/company"
-	"fmt"
 	"github.com/gin-gonic/gin"
 	"net/http"
 )
@@ -16,15 +15,19 @@ func NewCompanyHandler(createUC *company.CreateCompanyUseCase) *CompanyHandler {
 }
 
 func (h *CompanyHandler) Create(c *gin.Context) {
-	var payload company.CreateCompanyInputDTO
-
-	fmt.Println(payload, c.Request.Body)
-	if err := c.ShouldBindJSON(&payload); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "corpo da requisição inválido"})
+	payload, exists := c.Get("payload")
+	if !exists {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "payload não encontrado no contexto"})
 		return
 	}
 
-	err := h.createUseCase.Execute(c.Request.Context(), payload)
+	i, ok := payload.(company.CreateCompanyInputDTO)
+	if !ok {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "tipo do payload inválido no contexto"})
+		return
+	}
+
+	err := h.createUseCase.Execute(c.Request.Context(), i)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return

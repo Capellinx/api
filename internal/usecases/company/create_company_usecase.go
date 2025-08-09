@@ -9,7 +9,7 @@ import (
 )
 
 type CreateCompanyInputDTO struct {
-	Name         string `json:"name"`
+	Name         string `json:"name" validate:"required"`
 	SocialReason string `json:"social_reason"`
 	Email        string `json:"email"`
 	Cnpj         string `json:"cnpj"`
