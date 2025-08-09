@@ -19,8 +19,9 @@ func Run() {
 	companyRepository := postgres2.NewCompanyRepositoryPostgres(db)
 	companyCreate := company.NewCreateCompanyUseCase(companyRepository)
 	companyFetchAll := company.NewFetchAllCompanyUseCase(companyRepository)
+	companyDesactive := company.NewDesactiveCompanyUseCase(companyRepository)
 
-	companyHandler := http.NewCompanyHandler(companyCreate, companyFetchAll)
+	companyHandler := http.NewCompanyHandler(companyCreate, companyFetchAll, companyDesactive)
 
 	app := gin.Default()
 	routes.RegisterCompanyRoutes(app, companyHandler)
