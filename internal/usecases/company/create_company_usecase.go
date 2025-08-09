@@ -9,10 +9,11 @@ import (
 )
 
 type CreateCompanyInputDTO struct {
-	Name         string `json:"name" validate:"required"`
-	SocialReason string `json:"social_reason"`
-	Email        string `json:"email"`
-	Cnpj         string `json:"cnpj"`
+	Name         string   `json:"name" validate:"required"`
+	SocialReason string   `json:"social_reason"`
+	Email        string   `json:"email"`
+	Hosts        []string `json:"hosts"`
+	Cnpj         string   `json:"cnpj"`
 }
 
 type CreateCompanyUseCase struct {
@@ -37,6 +38,7 @@ func (uc *CreateCompanyUseCase) Execute(ctx context.Context, c CreateCompanyInpu
 		ID:           uuid.New().String(),
 		Name:         c.Name,
 		SocialReason: c.SocialReason,
+		Hosts:        c.Hosts,
 		Email:        c.Email,
 		Cnpj:         c.Cnpj,
 	}
