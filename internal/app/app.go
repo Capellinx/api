@@ -3,7 +3,7 @@ package app
 import (
 	"api/internal/domain/usecases/company"
 	"api/internal/infra/handler/http"
-	"api/internal/infra/repositories"
+	postgres2 "api/internal/infra/persistence/postgres"
 	"api/internal/infra/routes"
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
@@ -16,7 +16,7 @@ import (
 func Run() {
 	db := InitDatabase()
 
-	companyRepository := repositories.NewCompanyRepositoryPostgres(db)
+	companyRepository := postgres2.NewCompanyRepositoryPostgres(db)
 	companyUseCase := company.NewCreateCompanyUseCase(companyRepository)
 	companyHandler := http.NewCompanyHandler(companyUseCase)
 

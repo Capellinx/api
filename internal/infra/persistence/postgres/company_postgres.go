@@ -1,8 +1,7 @@
-package repositories
+package postgres
 
 import (
 	"api/internal/domain/entities"
-	"api/internal/mappers"
 	"context"
 	"errors"
 	"gorm.io/gorm"
@@ -17,7 +16,7 @@ func NewCompanyRepositoryPostgres(db *gorm.DB) *CompanyRepositoryPostgres {
 }
 
 func (rp *CompanyRepositoryPostgres) FindByCnpj(ctx context.Context, cnpj string) (*entities.Company, error) {
-	var companyDB mappers.CompanyDB
+	var companyDB CompanyDB
 	if err := rp.db.WithContext(ctx).Where("cnpj = ?", cnpj).First(&companyDB).Error; err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
 			return nil, nil
@@ -28,7 +27,7 @@ func (rp *CompanyRepositoryPostgres) FindByCnpj(ctx context.Context, cnpj string
 }
 
 func (rp *CompanyRepositoryPostgres) Create(ctx context.Context, company *entities.Company) error {
-	dbCompany := mappers.FromEntity(company)
+	dbCompany := FromEntity(company)
 	if err := rp.db.WithContext(ctx).Create(dbCompany).Error; err != nil {
 		return err
 	}

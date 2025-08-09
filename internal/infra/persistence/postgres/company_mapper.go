@@ -1,4 +1,4 @@
-package mappers
+package postgres
 
 import (
 	"api/internal/domain/entities"
