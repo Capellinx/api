@@ -1,4 +1,4 @@
-package postgres
+package company
 
 import (
 	"api/internal/domain/entities"
@@ -32,4 +32,19 @@ func (rp *CompanyRepositoryPostgres) Create(ctx context.Context, company *entiti
 		return err
 	}
 	return nil
+}
+
+func (rp *CompanyRepositoryPostgres) FindAll(ctx context.Context) ([]*entities.Company, error) {
+	dbCompany := make([]CompanyDB, 0)
+	if err := rp.db.WithContext(ctx).Find(&dbCompany).Error; err != nil {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			return nil, nil
+		}
+		return nil, err
+	}
+	companies := make([]*entities.Company, 0, len(dbCompany))
+	for _, c := range dbCompany {
+		companies = append(companies, c.ToEntity())
+	}
+	return companies, nil
 }

@@ -8,10 +8,14 @@ import (
 
 type CompanyHandler struct {
 	createUseCase *company.CreateCompanyUseCase
+	findAll       *company.FetchAllCompanyUseCase
 }
 
-func NewCompanyHandler(createUC *company.CreateCompanyUseCase) *CompanyHandler {
-	return &CompanyHandler{createUseCase: createUC}
+func NewCompanyHandler(createUC *company.CreateCompanyUseCase, fa *company.FetchAllCompanyUseCase) *CompanyHandler {
+	return &CompanyHandler{
+		createUseCase: createUC,
+		findAll:       fa,
+	}
 }
 
 func (h *CompanyHandler) Create(c *gin.Context) {
@@ -34,4 +38,14 @@ func (h *CompanyHandler) Create(c *gin.Context) {
 	}
 
 	c.Status(http.StatusCreated)
+}
+
+func (h *CompanyHandler) FetchAll(c *gin.Context) {
+	cp, err := h.findAll.Execute(c.Request.Context())
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	c.JSON(http.StatusOK, cp)
 }

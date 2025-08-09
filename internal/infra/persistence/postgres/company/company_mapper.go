@@ -1,4 +1,4 @@
-package postgres
+package company
 
 import (
 	"api/internal/domain/entities"
