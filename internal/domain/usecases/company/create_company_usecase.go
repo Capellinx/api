@@ -9,11 +9,12 @@ import (
 )
 
 type CreateCompanyInputDTO struct {
-	Name         string   `json:"name" validate:"required"`
-	SocialReason string   `json:"social_reason"`
-	Email        string   `json:"email"`
-	Hosts        []string `json:"hosts"`
-	Cnpj         string   `json:"cnpj"`
+	Name        string `json:"name" validate:"required"`
+	Email       string `json:"email"`
+	Industry    string `json:"industry"`
+	CompanySize string `json:"company_size"`
+	Cnpj        string `json:"cnpj"`
+	Website     string `json:"website"`
 }
 
 type CreateCompanyUseCase struct {
@@ -35,12 +36,13 @@ func (uc *CreateCompanyUseCase) Execute(ctx context.Context, c CreateCompanyInpu
 	}
 
 	company := &entities.Company{
-		ID:           uuid.New().String(),
-		Name:         c.Name,
-		SocialReason: c.SocialReason,
-		Hosts:        c.Hosts,
-		Email:        c.Email,
-		Cnpj:         c.Cnpj,
+		ID:          uuid.New().String(),
+		Name:        c.Name,
+		Industry:    c.Industry,
+		CompanySize: c.CompanySize,
+		Email:       c.Email,
+		Cnpj:        c.Cnpj,
+		Website:     c.Website,
 	}
 
 	if err := uc.repo.Create(ctx, company); err != nil {
