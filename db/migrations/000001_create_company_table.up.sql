@@ -1,5 +1,5 @@
-CREATE TABLE collaborators (
-    id SERIAL PRIMARY KEY,
+CREATE TABLE company (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     name VARCHAR(100) NOT NULL,
     social_reason VARCHAR(100) NOT NULL,
     email VARCHAR(100) NOT NULL UNIQUE,
@@ -7,7 +7,5 @@ CREATE TABLE collaborators (
 
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    deleted_at TIMESTAMP NULL,
-
-    role VARCHAR(50) NOT NULL
+    deleted_at TIMESTAMP NULL
 );
