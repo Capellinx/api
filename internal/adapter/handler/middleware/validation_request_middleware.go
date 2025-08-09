@@ -19,7 +19,7 @@ func ValidationRequestMiddleware[T any]() gin.HandlerFunc {
 
 		if err := validate.Struct(payload); err != nil {
 			c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{
-				"error":   "Dados da request inválidos",
+				"error":   "Campos inválidos",
 				"details": err.Error(),
 			})
 			return
